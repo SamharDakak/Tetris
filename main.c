@@ -810,7 +810,7 @@ void newBlock()
 
 
   
-  blocktype = rand()%7+1;
+  blocktype = rand()%6;
 
   
   if (blocktype == 0)
@@ -1552,7 +1552,7 @@ int main(void)
 // setISRtimer();                        // setup the timer
 // startISR();
 
-srand(seeder());
+srand(seeder(8489));
 setBrightness();
 
 
