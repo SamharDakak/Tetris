@@ -22,7 +22,7 @@
 #include <avr/interrupt.h>
 #include <time.h>
 
-#define maxInUse 2 
+#define maxInUse 3 
 #define SLAVE_SELECT    PORTB &= ~(1 << PB2)
 #define SLAVE_DESELECT  PORTB |= (1 << PB2)
 #define ISR_FREQ 190  

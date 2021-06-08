@@ -11,7 +11,7 @@
 
 
 
-#define NUM_DEVICES    2	 // Number of cascaded max7219's, or just 1
+#define NUM_DEVICES    3	 // Number of cascaded max7219's, or just 1
 void initSPI(void)
 {
 	DDRB |= (1 << PB2);		// Set SS output
@@ -1285,25 +1285,41 @@ void maxTransferOne(uint8_t whichMax, uint8_t address, uint8_t value) {
 
   for (int i=maxInUse; i>0; i--)   // Loop through our number of Bi-color LED Matrices 
   {
-    if (i==whichMax)
-    {
-      writeByte(address);  // Send the register address
-      writeByte(value);    // Send the value
 
-      writeByte(address);  // Send the register address
-      writeByte(value);    // Send the value
-	}
-    
-    else
-    {
-      writeByte(noop_reg);    // Send the register address
-      writeByte(noop_value);  // Send the value
+  if (whichMax==2)
+  {
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);  // Send the value
+	  writeByte(address+1);   // Send the register address
+	  writeByte(value);       // Send the value
 
-      writeByte(noop_reg);    // Send the register address
-      writeByte(noop_value);  // Send the value
-    }
+	  
+
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);  // Send the value
+  }
+  else  if (whichMax==1)
+  {
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);  // Send the value
+	  
+	  
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);
+	  writeByte(address+1);    // Send the register address
+	  writeByte(value);  // Send the value
   }
   
+  else
+  {
+	  writeByte(address+1);    // Send the register address
+	  writeByte(value);
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);  // Send the value
+	  writeByte(noop_reg);    // Send the register address
+	  writeByte(noop_value);  // Send the value
+	  
+  }
 
   SLAVE_DESELECT;
 /* startISR();*/
