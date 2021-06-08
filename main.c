@@ -1151,9 +1151,9 @@ void LEDRefresh()
       {  
         elapsedTime = millis() - startTime;
 
-          maxTransferSingle( /*RED,*/1, i,  ((rand()%255+1)));
-          maxTransferSingle( 2, i, ((rand()%255+1)));
-          
+          maxTransferSingle( /*RED,*/2, i,  ((rand()%255+1)));
+          maxTransferSingle( 3, i, ((rand()%255+1)));
+          _delay_ms(100);
 //           maxTransferSingle(/*GREEN,*/ 1, i, ((rand()%255+1)));
 //           maxTransferSingle(/*GREEN,*/2, i, ((rand()%255+1)));
         // Display random pattern for pre-defined period before blanking display
