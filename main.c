@@ -1154,8 +1154,8 @@ void LEDRefresh()
           maxTransferSingle( /*RED,*/1, i,  ((rand()%255+1)));
           maxTransferSingle( 2, i, ((rand()%255+1)));
           
-          maxTransferSingle(/*GREEN,*/ 1, i, ((rand()%255+1)));
-          maxTransferSingle(/*GREEN,*/2, i, ((rand()%255+1)));
+//           maxTransferSingle(/*GREEN,*/ 1, i, ((rand()%255+1)));
+//           maxTransferSingle(/*GREEN,*/2, i, ((rand()%255+1)));
         // Display random pattern for pre-defined period before blanking display
         if (elapsedTime < 2000)
         {            
@@ -1171,11 +1171,11 @@ void LEDRefresh()
          }   
         else
         {
-          maxTransferSingle(/*RED,*/ 1, i, 0x00);  // clear
-          maxTransferSingle(/*RED, */2, i, 0x00);  // clear
+          maxTransferSingle(/*RED,*/ 2, i, 0x00);  // clear
+          maxTransferSingle(/*RED, */3, i, 0x00);  // clear
 
-          maxTransferSingle(/*GREEN,*/ 1, i, 0x00);  // clear
-          maxTransferSingle( /*GREEN,*/2, i, 0x00);  // clear        
+          maxTransferSingle(/*GREEN,*/ 2, i, 0x00);  // clear
+          maxTransferSingle( /*GREEN,*/3, i, 0x00);  // clear        
         }  
       
       }
@@ -1551,8 +1551,25 @@ int  seeder (unsigned int *seed)
 	return result;
 }
 //**********************************************************************************************************************************************************
-
-
+uint16_t ReadADC(uint8_t ADCchannel)
+{
+	//select ADC channel with safety mask
+	ADMUX = (ADMUX & 0xF0) | (ADCchannel & 0x0F);
+	//single conversion mode
+	ADCSRA |= (1<<ADSC);
+	// wait until ADC conversion is complete
+	while( ADCSRA & (1<<ADSC) );
+	return ADC;
+}
+//**********************************************************************************************************************************************************
+void InitADC()
+{
+	// Select Vref=AVcc
+	ADMUX |= (1<<REFS0);
+	//set prescaller to 128 and enable ADC
+	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)|(1<<ADEN);
+}
+//**********************************************************************************************************************************************************
 int main(void)
 {
 	initSPI();
@@ -1560,12 +1577,12 @@ int main(void)
 	clearMatrix();
 	init_millis(f_cpu);
 	initTaster();
-	
+	InitADC();
 
 // setISRtimer();                        // setup the timer
 // startISR();
 
-srand(seeder(8489));
+srand(ReadADC(DDC0));
 setBrightness();
 
 
