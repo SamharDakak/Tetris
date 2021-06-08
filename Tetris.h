@@ -49,7 +49,7 @@ bool sw1_slope = 0;             // Flankenspeicher fuer Taste 1
 bool sw2_slope = 0;             // Flankenspeicher fuer Taste 2
 bool sw3_slope = 0;             // Flankenspeicher fuer Taste 3
 bool sw4_slope = 0;             // Flankenspeicher fuer Taste 4
-unsigned long f_cpu =  16000000UL  ;
+unsigned long f_cpu =  12288000UL   ;
 long delays = 0;
 short delay_ = 500;
 long bdelay = 0;
@@ -130,7 +130,7 @@ void writeWord(uint8_t address, uint8_t data);
 void initMatrix(void);
 
 void clearMatrix(void);
-void stopISR()  ;
-void startISR() ;
+void stopISR();
+void startISR();
 void setISRtimer();
 #endif /* INCFILE1_H_ */

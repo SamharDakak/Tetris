@@ -1283,43 +1283,27 @@ void maxTransferOne(uint8_t whichMax, uint8_t address, uint8_t value) {
  /*stopISR();*/
   SLAVE_SELECT; 
 
-  for (int i=maxInUse; i>0; i--)   // Loop through our number of Bi-color LED Matrices 
+  for (int i=maxInUse; i>0; i--)   // Loop through our number of Bi-color LED Matrices
   {
+	  if (i==whichMax)
+	  {
+		  writeByte(address);  // Send the register address
+		  writeByte(value);    // Send the value
 
-  if (whichMax==2)
-  {
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);  // Send the value
-	  writeByte(address+1);   // Send the register address
-	  writeByte(value);       // Send the value
+		  writeByte(address);  // Send the register address
+		  writeByte(value);    // Send the value
+	  }
+	  
+	  else
+	  {
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
 
-	  
-
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);  // Send the value
-  }
-  else  if (whichMax==1)
-  {
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);  // Send the value
-	  
-	  
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);
-	  writeByte(address+1);    // Send the register address
-	  writeByte(value);  // Send the value
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+	  }
   }
   
-  else
-  {
-	  writeByte(address+1);    // Send the register address
-	  writeByte(value);
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);  // Send the value
-	  writeByte(noop_reg);    // Send the register address
-	  writeByte(noop_value);  // Send the value
-	  
-  }
 
   SLAVE_DESELECT;
 /* startISR();*/
@@ -1339,30 +1323,43 @@ void maxTransferSingle(/*uint8_t wich_color*//*,*/ uint8_t whichMax, uint8_t add
 
 /*if (wich_color==GREEN)*/
 /*{*/
-  for (int i=maxInUse; i>0; i--)   // Loop through our number of Bi-color LED Matrices 
+  for (int i=maxInUse; i>0; i--)   // Loop through our number of Bi-color LED Matrices
   {
-    if (whichMax==2)
-    {
-		
-      writeByte(address+1);   // Send the register address
-      writeByte(value);       // Send the value
 
-      writeByte(noop_reg);    // Send the register address
-      writeByte(noop_value);  // Send the value
+	  if (whichMax==2)
+	  {
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+		  writeByte(address+1);   // Send the register address
+		  writeByte(value);       // Send the value
 
-   }
-    else
-    {
-      writeByte(noop_reg);    // Send the register address
-      writeByte(noop_value);  // Send the value
+		  
 
-      writeByte(address+1);    // Send the register address
-      writeByte(value);  // Send the value
-    }
-
-      // Send the register address
-     // Send the value
-  }
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+	  }
+	  else  if (whichMax==1)
+	  {
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+		  
+		  
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);
+		  writeByte(address+1);    // Send the register address
+		  writeByte(value);  // Send the value
+	  }
+	  
+	  else
+	  {
+		  writeByte(address+1);    // Send the register address
+		  writeByte(value);
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+		  writeByte(noop_reg);    // Send the register address
+		  writeByte(noop_value);  // Send the value
+		  
+	  }
 // }
 // else 
 // {
@@ -1393,7 +1390,7 @@ void maxTransferSingle(/*uint8_t wich_color*//*,*/ uint8_t whichMax, uint8_t add
 		// Send the value
 	/*}*/
 /*}*/
-
+}
  SLAVE_DESELECT;
 /* startISR();*/
 }
