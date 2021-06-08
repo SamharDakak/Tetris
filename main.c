@@ -1151,8 +1151,8 @@ void LEDRefresh()
       {  
         elapsedTime = millis() - startTime;
 
-          maxTransferSingle( /*RED,*/2, i,  ((rand()%255+1)));
-          maxTransferSingle( 3, i, ((rand()%255+1)));
+         maxTransferSingle( /*RED,*/2, i,  0x0F);
+         maxTransferSingle( 3, i, 0x0F);
           _delay_ms(100);
 //           maxTransferSingle(/*GREEN,*/ 1, i, ((rand()%255+1)));
 //           maxTransferSingle(/*GREEN,*/2, i, ((rand()%255+1)));
@@ -1228,11 +1228,7 @@ void LEDRefresh()
 // 				}
               
               /*else*/
-			  {
-//              maxTransferSingle( /*GREEN*//*,*/1, i, upper);
-//              maxTransferSingle(/*GREEN,*/2, i, lower);
-// 			  _delay_ms(100);
-			  }
+			  
 	  }
 	   
     }    
