@@ -126,16 +126,16 @@ int readBut()
 	// Auswerten der Flanken beim Druecken
 	
 	if ((sw1_neu==0)&(sw1_alt==1))  // wenn Taste 1 soeben gedrueckt wurde:
-	return 1 ;					// Links
+	sw1_slope = 1;						// Links
 	
 	if ((sw2_neu==0)&(sw2_alt==1))  // wenn Taste 2 eben gedrueckt wurde:
-	 return 2;				// Rechts
+	sw2_slope = 1;						// Rechts
 	
 	if ((sw3_neu==0)&(sw3_alt==1))  // wenn Taste 3 eben gedrueckt wurde:
-	return 4;					// Drehen
+	sw3_slope = 1;						// Drehen
 	
 	if ((sw4_neu==0)&(sw4_alt==1))  // wenn Taste 4 eben gedrueckt wurde:
-	return 3;					    // Fallen lassen
+	sw4_slope = 1;					    // Fallen lassen
 	
 	// Zwischenspeichern aktuelle Tastenwerte
 	
@@ -148,34 +148,7 @@ int readBut()
 	
 	
 }
-// int readButton(void)
-// {
-// 	// Einlesen der 4 Tastensignale
-// 	sw1_neu = (PIND & (1 << PD0));
-// 	sw2_neu = (PIND & (1 << PD1));
-// 	sw3_neu = (PIND & (1 << PD2));
-// 	sw4_neu = (PIND & (1 << PD3));
-// 	
-// 	// Auswerten der Flanken beim Druecken
-// 	
-// 	if ((sw1_neu==0)&(sw1_alt==1))  // wenn Taste 1 soeben gedrueckt wurde:
-// 	sw1_slope = 1;              //    Flankenbit Taste 1 setzen
-// 	
-// 	if ((sw2_neu==0)&(sw2_alt==1))  // wenn Taste 2 eben gedrueckt wurde:
-// 	sw2_slope = 1;              //    Flankenbit Taste 2 setzen
-// 	
-// 	if ((sw3_neu==0)&(sw3_alt==1))  // wenn Taste 3 eben gedrueckt wurde:
-// 	sw3_slope = 1;              //    Flankenbit Taste 3 setzen
-// 	
-// 	if ((sw4_neu==0)&(sw4_alt==1))  // wenn Taste 4 eben gedrueckt wurde:
-// 	sw4_slope = 1;              //    Flankenbit Taste 4 setzen
-// 	
-// 	// Zwischenspeichern aktuelle Tastenwerte
-// 	
-// 	sw1_alt = sw1_neu;              // aktuelle Tastenwerte speichern
-// 	sw2_alt = sw2_neu;              //    in Variable fuer alte Werte
-// 	sw3_alt = sw3_neu;
-// 	sw4_alt = sw4_neu;
+
 ////**********************************************************************************************************************************************************
 
 void rotate()
@@ -733,7 +706,7 @@ void check_gameover()
         pile[j][i]=0;
       }        
       updateLED();
-      _delay_ms(50);
+      
       
       int k;
       for(k=i;k>0;k--)
@@ -748,8 +721,9 @@ void check_gameover()
         pile[j][0] = 0;
       }        
       updateLED();      
-      _delay_ms(50);      
-      i++;     
+            
+      i++;
+	      
       
       
     
@@ -761,7 +735,8 @@ void check_gameover()
   {
     if (pile[i][0])
       gameover();
-  }
+  } 
+  zaehler=1;
   return;
 }
 
@@ -777,13 +752,13 @@ void gameover()
   gameoverFlag = true;
   startTime = millis();       
        
-  _delay_us(300);       
+         
             
   while(true)      //To re-play if any buttons depressed again
   {      
-    int button = readBut();
+    readBut();
     
-    if ((button < 5) && (button > 0))
+    if (sw1_slope|sw2_slope|sw3_slope|sw4_slope)
     {
       gameoverFlag = false;    
     
@@ -792,12 +767,19 @@ void gameover()
         for (j=0;j<8;j++)
         {
           pile[j][i]=0;
-        }             
+        } 
+		            
       }
-    
+    sw1_slope = 0;             
+    sw2_slope = 0;             
+	sw3_slope = 0;             
+	sw4_slope = 0;
+	zaehler=1; 
       break;
     }  
-  }  
+  }
+  
+    
 }
 
 
@@ -807,10 +789,17 @@ void newBlock()
 {
   check_gameover();
   
-
-
+if (zaehler==1)
+{
+	blocktype = rand()%6;
+	blocktypeFutur = rand()%6;
+}
+else{
+	blocktype = blocktypeFutur;
+	blocktypeFutur = rand()%6;
+}
   
-  blocktype = rand()%6;
+  
 
   
   if (blocktype == 0)
@@ -886,11 +875,110 @@ void newBlock()
   }    
 
   blockrotation = 0;
+ 
+ 
+  
+  if (blocktypeFutur == 0)
+    // 0 0 0 0
+  {
+	  		  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[7][2]=1;
+			  blockFutur[7][3]=1;
+			  }
+
+  if (blocktypeFutur == 1)
+  // 0
+  // 0 0 0
+  {
+	  
+		  
+			  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[7][2]=1;
+			  blockFutur[6][2]=1;
+		  
+  }
+  
+  if (blocktypeFutur == 2)
+  //     0
+  // 0 0 0
+  {
+	  
+			  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[7][2]=1;
+			  blockFutur[6][0]=1;
+		  
+  }
+
+  if (blocktypeFutur == 3)
+  // 0 0
+  // 0 0
+  {
+	  
+			  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[6][0]=1;
+			  blockFutur[6][1]=1;
+		  
+  }
+
+  if (blocktypeFutur == 4)
+  //   0 0
+  // 0 0
+  {
+	  
+			  blockFutur[6][0]=1;
+			  blockFutur[6][1]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[7][2]=1;
+		  
+  }
+  
+  if (blocktypeFutur == 5)
+  //   0
+  // 0 0 0
+  {
+	  
+			  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[7][2]=1;
+			  blockFutur[6][1]=1;
+		  
+  }
+
+  if (blocktypeFutur == 6)
+  // 0 0
+  //   0 0
+  {
+	  
+			  blockFutur[7][0]=1;
+			  blockFutur[7][1]=1;
+			  blockFutur[6][1]=1;
+			  blockFutur[6][2]=1;
+		  
+  }
+  
 }
 
 
 
-//**********************************************************************************************************************************************************  
+//********************************************************************************************************************************************************** 
+void futurBlock(){
+	
+	for (int i=6;i<8;i++)
+	{
+		for (int j=0;j<4;j++)
+		{
+			maxTransferSingle(1,i,0x00);
+		}
+	}
+
+	
+	
+}
+//********************************************************************************************************************************************************** 
 bool space_below()
 { 
   int i;
@@ -1153,7 +1241,7 @@ void LEDRefresh()
 
          maxTransferSingle( /*RED,*/2, i,  0x0F);
          maxTransferSingle( 3, i, 0x0F);
-          _delay_ms(100);
+         
 //           maxTransferSingle(/*GREEN,*/ 1, i, ((rand()%255+1)));
 //           maxTransferSingle(/*GREEN,*/2, i, ((rand()%255+1)));
         // Display random pattern for pre-defined period before blanking display
@@ -1637,7 +1725,7 @@ updateLED();
 // 		writeWord(0x02,0x0F);
 // 		SLAVE_DESELECT;
 		
-		 _delay_ms(30);
+		 
 		 
 		 if (delays < millis())
 		 {
@@ -1646,16 +1734,33 @@ updateLED();
 		 }
 		 
 		 //buttun actions
-		 int button = readBut();
+		 readBut();
 		 
-		 if (button == 1) //up=rotate
-		 rotate();
-		 if (button == 2) //right=moveright
-		 moveright();
-		 if (button == 3) //left=moveleft
-		 moveleft();
-		 if (button == 4) //down=movedown
-		 movedown();
+		 if (sw1_slope)
+		 {
+			 rotate();
+			 sw1_slope=0;
+			 } //up=rotate
+		 
+		 if (sw2_slope) 
+		 {
+			 moveright();
+			 sw2_slope=0;
+		 } 
+		 //right=moveright
+		 
+		 if (sw3_slope)
+		 {
+			 moveleft();
+			 sw3_slope=0;
+		 }  //left=moveleft
+		 
+		 if (sw4_slope) 
+		 {
+			 movedown();
+			 sw4_slope=0;
+		 } //down=movedown
+		 
     }
 }
 

@@ -57,15 +57,18 @@ short buttondelay = 150;
 short btdowndelay = 30;
 short btsidedelay = 80;
 unsigned char blocktype;
+unsigned char blocktypeFutur;
 unsigned char blockrotation;
 unsigned long startTime;
 unsigned long elapsedTime;
 bool block[8][18]; //2 extra for rotation
+bool blockFutur[8][8]; //2 extra for rotation
 bool pile[8][16];
 bool disp[8][16];
 bool selectColor = RED ;
 bool gameoverFlag = false;
 int cnt = 0;
+int zaehler=1;
 
 
 
