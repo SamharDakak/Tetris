@@ -762,6 +762,7 @@ void gameover()
     if (sw1_slope|sw2_slope|sw3_slope|sw4_slope)
     {
 		clearMatrix();
+		score=0;
       gameoverFlag = false;    
     
       for(i=15;i>=0;i--)
