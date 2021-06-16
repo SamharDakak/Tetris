@@ -54,8 +54,8 @@ void initMatrix()
 	SLAVE_SELECT;
 	for(i = 0; i < NUM_DEVICES; i++)	// Loop through number of cascaded devices
 	{
-		writeByte(0x0E); // Select Intensity register
-		writeByte(0x07); // Set brightness
+		writeByte(0x0A); // Select Intensity register
+		writeByte(0x1F); // Set brightness
 	}
 	SLAVE_DESELECT;
 
@@ -723,7 +723,7 @@ void check_gameover()
       updateLED();      
             
       i++;
-	      
+	  score++;
       
       
     
@@ -752,7 +752,8 @@ void gameover()
   gameoverFlag = true;
   startTime = millis();       
        
-         
+       clearMatrix();
+	   findescore(score);  
             
   while(true)      //To re-play if any buttons depressed again
   {      
@@ -760,6 +761,7 @@ void gameover()
     
     if (sw1_slope|sw2_slope|sw3_slope|sw4_slope)
     {
+		clearMatrix();
       gameoverFlag = false;    
     
       for(i=15;i>=0;i--)
@@ -1273,6 +1275,7 @@ void LEDRefresh()
        {
           maxTransferSingle(/*GREEN,*/ 1, i, lower);
           maxTransferSingle( /*GREEN,*/2, i, upper);
+		  
 	   }
       /* else*/
 //        {
@@ -1652,6 +1655,109 @@ void InitADC()
 	ADMUX |= (1<<REFS0);
 	//set prescaller to 128 and enable ADC
 	ADCSRA |= (1<<ADPS2)|(1<<ADPS1)|(1<<ADPS0)|(1<<ADEN);
+}
+//**********************************************************************************************************************************************************
+
+void findescore( unsigned int score)
+{
+	
+	
+	for(int i = 0;i<8;i++)
+	{
+		if (score>=10)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[1][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-10][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=20)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[2][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-20][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=30)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[3][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-30][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=40)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[4][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-40][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=50)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[5][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-50][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=60)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[6][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-60][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=70)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[7][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-70][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=80)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[8][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-80][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else if(score>=90)
+		{
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[9][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score-90][i]));
+			SLAVE_DESELECT;
+			
+		}
+		else
+		{
+			
+			SLAVE_SELECT;
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[0][i]));
+			writeWord (i,pgm_read_byte(&Nummern[score][i]));
+			SLAVE_DESELECT;
+			
+		}
+
+		
+	}
 }
 //**********************************************************************************************************************************************************
 int main(void)
