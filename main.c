@@ -801,7 +801,7 @@ else{
 	blocktype = blocktypeFutur;
 	blocktypeFutur = rand()%6;
 }
-  
+  zaehler++;
   
 
   
@@ -879,89 +879,9 @@ else{
 
   blockrotation = 0;
  
- 
+ futurBlock();
   
-  if (blocktypeFutur == 0)
-    // 0 0 0 0
-  {
-	  		  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[7][2]=1;
-			  blockFutur[7][3]=1;
-			  }
-
-  if (blocktypeFutur == 1)
-  // 0
-  // 0 0 0
-  {
-	  
-		  
-			  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[7][2]=1;
-			  blockFutur[6][2]=1;
-		  
-  }
   
-  if (blocktypeFutur == 2)
-  //     0
-  // 0 0 0
-  {
-	  
-			  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[7][2]=1;
-			  blockFutur[6][0]=1;
-		  
-  }
-
-  if (blocktypeFutur == 3)
-  // 0 0
-  // 0 0
-  {
-	  
-			  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[6][0]=1;
-			  blockFutur[6][1]=1;
-		  
-  }
-
-  if (blocktypeFutur == 4)
-  //   0 0
-  // 0 0
-  {
-	  
-			  blockFutur[6][0]=1;
-			  blockFutur[6][1]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[7][2]=1;
-		  
-  }
-  
-  if (blocktypeFutur == 5)
-  //   0
-  // 0 0 0
-  {
-	  
-			  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[7][2]=1;
-			  blockFutur[6][1]=1;
-		  
-  }
-
-  if (blocktypeFutur == 6)
-  // 0 0
-  //   0 0
-  {
-	  
-			  blockFutur[7][0]=1;
-			  blockFutur[7][1]=1;
-			  blockFutur[6][1]=1;
-			  blockFutur[6][2]=1;
-		  
-  }
   
 }
 
@@ -970,12 +890,14 @@ else{
 //********************************************************************************************************************************************************** 
 void futurBlock(){
 	
-	for (int i=6;i<8;i++)
+	for (int i=0;i<8;i++)
 	{
-		for (int j=0;j<4;j++)
-		{
-			maxTransferSingle(1,i,0x00);
-		}
+		
+		
+		SLAVE_SELECT;
+		writeWord (i,pgm_read_byte(&blockFutur[blocktypeFutur][i]));
+		SLAVE_DESELECT;
+		
 	}
 
 	
@@ -1805,7 +1727,7 @@ setBrightness();
 // TIMSK0 |= (1 << OCIE0A);
 // 
 // sei();//allow interrupts
-
+futurBlock();
 newBlock();
 updateLED();
 //     for(int i= 0;i<8;i++)
