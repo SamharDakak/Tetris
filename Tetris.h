@@ -29,12 +29,16 @@
 #define GREEN 0
 #define RED 1
 
+#define N (32UL) // number of bits
 #define offREDoffGREEN 0
 #define offREDonGREEN 1
 #define onREDoffGREEN 2
 int colorMode = '3';
 int maxInShutdown = RED;
 int SetbrightnessValue = 15;
+
+volatile uint8_t counter= 0;
+static uint8_t data[N];
 bool sw1_neu = 1;               // Bitspeicher fuer Taste 1
 bool sw2_neu = 1;               // Bitspeicher fuer Taste 2
 bool sw3_neu = 1;               // Bitspeicher fuer Taste 3

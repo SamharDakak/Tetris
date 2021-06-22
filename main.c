@@ -1682,6 +1682,40 @@ void findescore( unsigned int score)
 	}
 }
 //**********************************************************************************************************************************************************
+unsigned short get_seed() //Startwert für rand() erzeugen
+{
+	unsigned short seed = 0;
+	unsigned short *p = (unsigned short*) (RAMEND+1);
+	extern unsigned short __heap_start;
+	
+	while (p >= &__heap_start + 1)
+	seed ^= * (--p);
+	
+	return seed;
+	
+}
+//**********************************************************************************************************************************************************
+// void ADCRNG_init(void)
+// {
+// 	ADMUX |= (1<<REFS0); // use internal 2.56V voltage reference
+// 	ADMUX |= (1<<ADLAR); // set left adjustment of ADC result (8bit mode)
+// 	ADCSRA |= (1<<ADPS0); // set division factor to 2
+// 	ADCSRA |= (1<<ADEN)|(1<<ADIE); // enable ADC0 (interrupt)
+////**********************************************************************************************************************************************************
+
+uint32_t ADCRNG_next(void) {
+	uint8_t i;
+	uint32_t result = 0;
+	counter = 0; // reset counter
+	ADCSRA |= (1<<ADSC); // start signal acquisition
+	while (counter != N); // wait for data
+	for (i = 0; i < N; ++i, result <<= 1) {
+		result |= (data[i] & 1); // use least significant bit
+	}
+	return result;
+}
+//**********************************************************************************************************************************************************
+
 int main(void)
 {
 	initSPI();
