@@ -111,6 +111,7 @@ void initTaster(void)
 	_delay_ms(10);                  // Wartezeit Umstellung Hardware-Signal
 }
 //**********************************************************************************************************************************************************
+
 int readBut()
 {
 	if (bdelay > millis())
@@ -148,6 +149,19 @@ int readBut()
 	
 	
 }
+
+//**********************************************************************************************************************************************************
+void get_seed(void){
+	if (sw4_neu==1||sw1_neu==1)
+	{
+		zufallZaehler++;
+	}
+	
+	if (zufallZaehler>LONG_MAX-100)
+	{
+		zufallZaehler%=900;
+	}
+	} //Startwert für rand() erzeugen
 
 ////**********************************************************************************************************************************************************
 
@@ -794,10 +808,12 @@ void newBlock()
   
 if (zaehler==1)
 {
+	srand(zufallZaehler);
 	blocktype = rand()%6;
 	blocktypeFutur = rand()%6;
 }
 else{
+	srand(zufallZaehler);
 	blocktype = blocktypeFutur;
 	blocktypeFutur = rand()%6;
 }
@@ -1682,18 +1698,8 @@ void findescore( unsigned int score)
 	}
 }
 //**********************************************************************************************************************************************************
-unsigned short get_seed() //Startwert für rand() erzeugen
-{
-	unsigned short seed = 0;
-	unsigned short *p = (unsigned short*) (RAMEND+1);
-	extern unsigned short __heap_start;
-	
-	while (p >= &__heap_start + 1)
-	seed ^= * (--p);
-	
-	return seed;
-	
-}
+
+
 //**********************************************************************************************************************************************************
 // void ADCRNG_init(void)
 // {
@@ -1795,8 +1801,9 @@ updateLED();
 			 movedown();
 		 }
 		 
-		 //buttun actions
+		 //button actions
 		 readBut();
+		 get_seed();
 		 
 		 if (sw1_slope)
 		 {

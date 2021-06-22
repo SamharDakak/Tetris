@@ -21,6 +21,7 @@
 #include <util/atomic.h>
 #include <avr/interrupt.h>
 #include <time.h>
+#include <limits.h>
 
 #define maxInUse 3 
 #define SLAVE_SELECT    PORTB &= ~(1 << PB2)
@@ -73,6 +74,7 @@ bool selectColor = RED ;
 bool gameoverFlag = false;
 int cnt = 0;
 int zaehler=1;
+unsigned long zufallZaehler=0;
 unsigned int score= 0 ;
 	const char Nummern[][8] PROGMEM=
 	{
@@ -107,7 +109,6 @@ unsigned int score= 0 ;
 																								   			
 		{0B00000000,0B00000000,0B00001100,0B00001100,0B00111100,0B00111100,0B00001100,0B00001100}, //   0
 																								   // 0 0 0
-			
 			
 		{0B00000000,0B00000000,0B00110000,0B00110000,0B00111100,0B00111100,0B00001100,0B00001100}, //   0 0
 																								   // 0 0
