@@ -736,7 +736,7 @@ void check_gameover()
     if (pile[i][0])
       gameover();
   } 
-  zaehler=1;
+  
   return;
 }
 
@@ -801,7 +801,7 @@ else{
 	blocktype = blocktypeFutur;
 	blocktypeFutur = rand()%6;
 }
-  zaehler++;
+ 
   
 
   
@@ -880,8 +880,7 @@ else{
   blockrotation = 0;
  
  futurBlock();
-  
-  
+ zaehler++;
   
 }
 
