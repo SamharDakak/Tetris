@@ -45,7 +45,7 @@ void initMatrix()
 	for(i = 0; i < maxInUse; i++)	// Loop through number of cascaded devices
 	{
 		writeByte(0x0A); // Select Intensity register
-		writeByte(0x1F); // Set brightness
+		writeByte(15); // Set brightness
 	}
 	SLAVE_DESELECT;
 
